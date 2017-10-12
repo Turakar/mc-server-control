@@ -6,6 +6,7 @@
 
 <html>
 <head>
+    <@headers/>
     <meta charset="utf-8"/>
     <title>Server Status</title>
 </head>
@@ -36,7 +37,7 @@
                     </td>
                     <#if user??>
                         <td>
-                            <#if user.servers?seq_contains(server)>
+                            <#if user.servers?seq_contains(server) || user.admin>
                                 <#if running>
                                     <button name="button" value="${server}.stop" type="submit">Stop</button>
                                 <#else>

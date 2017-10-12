@@ -2,8 +2,11 @@
 
 <#-- @ftlvariable name="" type="de.thoffbauer.minecraftswitcher.pages.users.UsersView -->
 
+<#include "../base.ftl">
+
 <html>
 <head>
+    <@headers/>
     <meta charset="utf-8"/>
     <title>Users</title>
 </head>

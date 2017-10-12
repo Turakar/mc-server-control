@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public class MinecraftController {
 
@@ -34,15 +35,14 @@ public class MinecraftController {
     }
 
     public String[] getServerNames() {
-        return serverDir.list();
+        return serverDir.list((dir, name) -> new File(dir.getPath() + "/" + name).isDirectory());
     }
 
     public void start(String server) throws InterruptedException {
         logger.info("Starting {}", server);
-        Runtime runtime = Runtime.getRuntime();
         try {
-            Process process = runtime.exec(serverDir.getAbsolutePath() + "/" + server + "/start.sh");
-            process.wait(TIMEOUT);
+            Process process = exec(serverDir.getAbsolutePath() + "/" + server, "start.sh");
+            process.waitFor(TIMEOUT, TimeUnit.MILLISECONDS);
             if(process.isAlive()) {
                 throw new RuntimeException("Start command timed out.");
             }
@@ -51,15 +51,19 @@ public class MinecraftController {
         }
     }
 
-    public Set<String> getRunningServers() {
+    public Set<String> getRunningServers() throws InterruptedException {
         try {
-            Runtime runtime = Runtime.getRuntime();
-            Process process = runtime.exec(serverDir.getAbsolutePath() + "/list.sh");
+            Process process = exec(serverDir.getAbsolutePath(), "list.sh");
+            process.waitFor(TIMEOUT, TimeUnit.MILLISECONDS);
             Set<String> servers = new HashSet<>();
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String prefix = serverDir.getAbsolutePath() + "/";
             String line;
             while((line = reader.readLine()) != null) {
-                servers.add(line);
+                if(line.startsWith(prefix)) {
+                    int beginIndex = line.lastIndexOf('/') + 1;
+                    servers.add(line.substring(beginIndex));
+                }
             }
             return servers;
         } catch (IOException e) {
@@ -69,15 +73,25 @@ public class MinecraftController {
 
     public void stop(String server) throws InterruptedException {
         logger.info("Stopping {}.", server);
-        Runtime runtime = Runtime.getRuntime();
         try {
-            Process process = runtime.exec(new String[] {serverDir.getAbsolutePath() + "/stop.sh", server});
-            process.wait(TIMEOUT);
+            Process process = exec(serverDir.getAbsolutePath(), "stop.sh", server);
+            process.waitFor(TIMEOUT, TimeUnit.MILLISECONDS);
             if(process.isAlive()) {
                 throw new RuntimeException("Start command timed out.");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private Process exec(String dir, String... command) throws IOException {
+        Runtime runtime = Runtime.getRuntime();
+        logger.debug("Running command: {} in {}", command, dir);
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        command[0] = dir + "/" + command[0];
+        processBuilder.command(command);
+        processBuilder.directory(new File(dir));
+        Process process = processBuilder.start();
+        return process;
     }
 }

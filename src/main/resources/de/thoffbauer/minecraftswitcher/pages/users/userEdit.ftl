@@ -6,6 +6,7 @@
 
 <html>
 <head>
+    <@headers/>
     <meta charset="utf-8"/>
     <title>User Creation</title>
 </head>

@@ -8,12 +8,14 @@ import de.thoffbauer.minecraftswitcher.pages.users.UserCreatePage;
 import de.thoffbauer.minecraftswitcher.pages.users.UserEditPage;
 import de.thoffbauer.minecraftswitcher.pages.users.UsersPage;
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.auth.AuthDynamicFeature;
 import io.dropwizard.auth.AuthValueFactoryProvider;
 import io.dropwizard.auth.basic.BasicCredentialAuthFilter;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
+import org.eclipse.jetty.servlet.ErrorPageErrorHandler;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 
 import java.io.File;
@@ -27,6 +29,7 @@ public class Server extends Application<ServerConfig> {
     @Override
     public void initialize(Bootstrap<ServerConfig> bootstrap) {
         bootstrap.addBundle(new ViewBundle<>());
+        bootstrap.addBundle(new AssetsBundle("/static", "/static"));
     }
 
     @Override

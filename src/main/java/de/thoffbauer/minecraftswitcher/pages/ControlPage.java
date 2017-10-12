@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
@@ -26,17 +27,17 @@ public class ControlPage {
 
     @POST
     public Response post(@Auth User user, @FormParam("button") String button) {
-        MinecraftController minecraftController = MinecraftController.getInstance();
-        Set<String> runningServers = minecraftController.getRunningServers();
-        String[] parts = button.split("\\.");
-        String server = parts[0];
-        if(!user.isAdmin() && !user.getServers().contains(server)) {
-            return Response.status(403).build();
-        }
-        if(!Arrays.asList(minecraftController.getServerNames()).contains(server)) {
-            return Response.status(404).build();
-        }
         try {
+            MinecraftController minecraftController = MinecraftController.getInstance();
+            Set<String> runningServers = minecraftController.getRunningServers();
+            String[] parts = button.split("\\.");
+            String server = parts[0];
+            if(!(user.isAdmin() || user.getServers().contains(server))) {
+                return Response.status(403).build();
+            }
+            if(!Arrays.asList(minecraftController.getServerNames()).contains(server)) {
+                return Response.status(404).build();
+            }
             if(parts[1].equals("start")) {
                 if(runningServers.contains(server)) {
                     return Response.ok(new ControlView(user, "Server already running!")).build();
@@ -54,7 +55,7 @@ public class ControlPage {
             logger.error("Could not start or stop server, because the script is not responding!", e);
             return Response.status(503).build();
         }
-        return Response.ok(new ControlView(user, null)).build();
+        return Response.seeOther(URI.create("/")).build();
     }
 
 }

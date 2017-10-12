@@ -53,7 +53,7 @@ public class Authenticator implements io.dropwizard.auth.Authenticator<BasicCred
             }
             String token = passwordAuthentication.hash(password.toCharArray());
             users.put(user.getName(), user);
-            tokens.put(user.getName(), password);
+            tokens.put(user.getName(), token);
             save();
             logger.info("User {} added.", user.getName());
             return true;
