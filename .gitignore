@@ -1,0 +1,14 @@
+# IDEA
+.idea/
+
+# Dolphin
+.directory
+
+# Gradle
+out/
+build/
+.gradle/
+
+# Program
+servers/
+users.store

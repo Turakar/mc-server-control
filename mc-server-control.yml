@@ -1,0 +1,6 @@
+serverDir: servers
+
+logging:
+  level: INFO
+  loggers:
+    "de.thoffbauer": ALL
