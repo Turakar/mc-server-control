@@ -21,9 +21,9 @@ jar {
     }
 
     manifest {
-        attributes 'Implementation-Title': 'Hello-World',
+        attributes 'Implementation-Title': 'MC-Server-Control',
                 'Built-Date': new Date(),
                 'Built-JDK': System.getProperty('java.version'),
-                'Main-Class': 'de.kja.server.Server'
+                'Main-Class': 'de.thoffbauer.minecraftswitcher.Server'
     }
 }
