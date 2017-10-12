@@ -1,11 +1,11 @@
 # IDEA
 .idea/
+out/
 
 # Dolphin
 .directory
 
 # Gradle
-out/
 build/
 .gradle/
 
