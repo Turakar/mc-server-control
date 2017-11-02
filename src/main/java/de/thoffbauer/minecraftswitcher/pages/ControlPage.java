@@ -15,24 +15,17 @@ import java.util.Optional;
 import java.util.Set;
 
 @Produces(MediaType.TEXT_HTML)
+@Path("/control")
 public class ControlPage {
 
     private static final Logger logger = LoggerFactory.getLogger(ControlPage.class);
 
     @GET
-    @Path("/")
-    public Response getStatus() {
-        return Response.ok(new ControlView(null, null)).build();
-    }
-
-    @GET
-    @Path("/control")
     public Response getControl(@Auth User user) {
         return Response.ok(new ControlView(user, null)).build();
     }
 
     @POST
-    @Path("/control")
     public Response post(@Auth User user, @FormParam("button") String button) {
         try {
             MinecraftController minecraftController = MinecraftController.getInstance();

@@ -4,6 +4,7 @@ import de.thoffbauer.minecraftswitcher.auth.Authenticator;
 import de.thoffbauer.minecraftswitcher.auth.Authorizer;
 import de.thoffbauer.minecraftswitcher.auth.User;
 import de.thoffbauer.minecraftswitcher.pages.ControlPage;
+import de.thoffbauer.minecraftswitcher.pages.StatusPage;
 import de.thoffbauer.minecraftswitcher.pages.users.UserCreatePage;
 import de.thoffbauer.minecraftswitcher.pages.users.UserEditPage;
 import de.thoffbauer.minecraftswitcher.pages.users.UsersPage;
@@ -52,6 +53,7 @@ public class Server extends Application<ServerConfig> {
         environment.jersey().register(new UserCreatePage(authenticator));
         environment.jersey().register(new UserEditPage(authenticator));
 
+        environment.jersey().register(new StatusPage());
         environment.jersey().register(new ControlPage());
     }
 

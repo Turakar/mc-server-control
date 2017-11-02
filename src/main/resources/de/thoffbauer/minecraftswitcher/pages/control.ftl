@@ -12,7 +12,7 @@
 </head>
 <body>
     <@error_banner/>
-    <form action="/" method="post">
+    <#if user??><form action="/" method="post"></#if>
         <table>
             <th>
                 Server
@@ -51,6 +51,6 @@
                 </tr>
             </#list>
         </table>
-    </form>
+    <#if user??></form></#if>
 </body>
 </html>
