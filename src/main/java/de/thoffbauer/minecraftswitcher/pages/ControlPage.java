@@ -55,7 +55,7 @@ public class ControlPage {
             logger.error("Could not start or stop server, because the script is not responding!", e);
             return Response.status(503).build();
         }
-        return Response.seeOther(URI.create("/")).build();
+        return Response.seeOther(URI.create("/control")).build();
     }
 
 }

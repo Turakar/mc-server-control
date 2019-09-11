@@ -12,7 +12,7 @@
 </head>
 <body>
     <@error_banner/>
-    <#if user??><form action="/" method="post"></#if>
+    <#if user??><form action="/control" method="post"></#if>
         <table>
             <th>
                 Server

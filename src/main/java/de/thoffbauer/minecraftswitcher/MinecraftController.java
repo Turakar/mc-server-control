@@ -77,7 +77,7 @@ public class MinecraftController {
             Process process = exec(serverDir.getAbsolutePath(), "stop.sh", server);
             process.waitFor(TIMEOUT, TimeUnit.MILLISECONDS);
             if(process.isAlive()) {
-                throw new RuntimeException("Start command timed out.");
+                throw new RuntimeException("Stop command timed out.");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
